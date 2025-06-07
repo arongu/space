@@ -1,21 +1,18 @@
 package aron.app;
 
-/*
-    d(c,p) = sqrt( (cx-px)pow2 + (cy-py)pow2 );
-*/
+// d(c,p) = sqrt( (cx-px)pow2 + (cy-py)pow2 );
 public class SameXYRCircle {
-    int radius;
-    int x, y;
+    private final int r, x, y;
 
-    public SameXYRCircle( final int radius ) {
-        if ( radius < 0 ) {
-            this.radius = -1 * radius;
+    public SameXYRCircle( final int r ) {
+        if ( r < 0 ) {
+            this.r = -1 * r;
         } else {
-            this.radius = radius;
+            this.r = r;
         }
 
-        x = radius;
-        y = radius;
+        x = r;
+        y = r;
     }
 
     public double distanceFromCenter( final int x, final int y ) {
@@ -28,8 +25,8 @@ public class SameXYRCircle {
         return Math.sqrt(dx + dy);
     }
 
-    public boolean IsPointInside( final int x, final int y ) {
+    public boolean isPointInside( final int x, final int y ) {
         double distance = distanceFromCenter(x, y);
-        return distance <= (double) this.radius;
+        return distance <= (double) this.r;
     }
 }

@@ -1,4 +1,4 @@
-package aron.app;
+package reg.space;
 
 // d(c,p) = sqrt( (cx-px)pow2 + (cy-py)pow2 );
 public class SameXYRCircle {

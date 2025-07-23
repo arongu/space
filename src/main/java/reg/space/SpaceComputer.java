@@ -1,4 +1,4 @@
-package aron.app;
+package reg.space;
 
 public class SpaceComputer {
     public static void canWeLandSafely( final int r, final int landingX, final int landingY ) {

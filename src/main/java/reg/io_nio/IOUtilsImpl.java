@@ -15,17 +15,16 @@ public class IOUtilsImpl implements IOUtils {
         final Path pathFileGzip = Paths.get(folder).resolve(pathFile.getFileName() + ".gzip");
 
         try ( final FileInputStream fileInputStream = new FileInputStream(pathFile.toFile()) ) {
-            try ( final FileOutputStream fileOutputStream = new FileOutputStream(pathFileGzip.toFile()) ) {
-                final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream);
-                byte[]                 buffer           = new byte[2048];
-                int                    len;
+            try ( final FileOutputStream fileOutputStream = new FileOutputStream(pathFileGzip.toFile());
+                  final GZIPOutputStream gzipOutputStream = new GZIPOutputStream(fileOutputStream) ) {
+                byte[] buffer = new byte[2048];
+                int    len;
 
                 while ( ( len = fileInputStream.read(buffer) ) != -1 ) {
                     gzipOutputStream.write(buffer, 0, len);
                 }
 
                 gzipOutputStream.flush();
-                gzipOutputStream.close();
             }
 
         } catch ( final IOException ioException ) {
@@ -61,7 +60,7 @@ public class IOUtilsImpl implements IOUtils {
                 public FileVisitResult visitFile( Path file, BasicFileAttributes attrs ) {
                     if ( !Files.isDirectory(file) ) {
                         String fileName = file.getFileName().toString();
-                        if ( ext.isEmpty() ){
+                        if ( ext.isEmpty() ) {
                             asbolutePaths.add(file.toAbsolutePath().toString());
                         } else if ( fileName.endsWith(ext) ) {
                             asbolutePaths.add(file.toAbsolutePath().toString());

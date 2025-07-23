@@ -32,7 +32,7 @@ public class Main {
 
     public static void ioPart1_gzip() {
         final IOUtils ioUtils = new IOUtilsImpl();
-        final String created = ioUtils.gzip("file.txt", "");
+        final String  created = ioUtils.gzip("file.txt", "");
         System.out.printf("gzip created: %s\n", created);
     }
 

@@ -3,6 +3,7 @@ package reg.generics;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.NoSuchElementException;
+import java.util.function.Consumer;
 
 public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
     public static class DefaultIteratorImpl<T> implements DefaultIterator<T> {
@@ -25,12 +26,38 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
         @Override
         public T next() {
             if ( hasNext() ) {
+                while ( collectionImpl.elements[iteratorIndex] == null ) {
+                    iteratorIndex++;
+                    if ( !hasNext() ) {
+                        throw new NoSuchElementException();
+                    }
+                }
+
                 int index = iteratorIndex;
                 iteratorIndex++;
                 return collectionImpl.elements[index];
             }
 
             throw new NoSuchElementException();
+        }
+
+        @Override
+        public void remove() {
+            if ( collectionImpl.elements == null ) {
+                return;
+            }
+
+            final T element = collectionImpl.elements[iteratorIndex];
+            if ( element != null ) {
+                collectionImpl.remove(element);
+            }
+        }
+
+        @Override
+        public void forEachRemaining( Consumer <? super T> action ) {
+            while ( hasNext() ) {
+                action.accept( next() );
+            }
         }
     }
 

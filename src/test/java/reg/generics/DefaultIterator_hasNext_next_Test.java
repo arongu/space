@@ -6,9 +6,19 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DefaultCollectionImpl_defaultIterator_Test {
+public class DefaultIterator_hasNext_next_Test {
     @Test
-    public void retainAll_shouldRemoveAllElements_whenCollectionIsEmpty() {
+    public void hasNext_shouldReturnFalse_whenCollectionIsEmpty() {
+        final DefaultCollection <String> dfc             = new DefaultCollectionImpl <>();
+        final DefaultIterator <String>   defaultIterator = dfc.iterator();
+
+
+        assertFalse(defaultIterator.hasNext());
+        assertThrows(NoSuchElementException.class, () -> defaultIterator.next());
+    }
+
+    @Test
+    public void hasNext_shouldReturnTrueOrFalse_whenCalled() {
         final DefaultCollection <String> dfc             = new DefaultCollectionImpl <>();
         final String[]                   toAdd           = new String[] { "apples", "bananas", "carrots", "one", "two", "three", "four" };
         final DefaultIterator <String>   defaultIterator = dfc.iterator();

@@ -8,7 +8,7 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
     public static class DefaultIteratorImpl<T> implements DefaultIterator<T> {
         private final DefaultCollectionImpl<T> collectionImpl;
 
-        int currentIndex = 0;
+        int iteratorIndex = 0;
         public DefaultIteratorImpl(final DefaultCollectionImpl<T> collectionImpl ) {
             this.collectionImpl = collectionImpl;
         }
@@ -19,13 +19,15 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
                 return false;
             }
 
-            return currentIndex < collectionImpl.elements.length - 1;
+            return iteratorIndex <= collectionImpl.head;
         }
 
         @Override
         public T next() {
             if ( hasNext() ) {
-                return collectionImpl.elements[currentIndex++];
+                int index = iteratorIndex;
+                iteratorIndex++;
+                return collectionImpl.elements[index];
             }
 
             throw new NoSuchElementException();

@@ -122,7 +122,7 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
 
     @Override
     public <E> E[] toArray( E[] ts ) {
-        final E[] arr = (E[]) new Object[ts.length];
+        E[] arr = (E[]) new Object[ts.length];
         System.arraycopy(ts, 0, arr, 0, ts.length);
         return arr;
     }
@@ -137,22 +137,20 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
             elements = (T[]) new Object[10];
             elements[0] = t;
             head = 0;
-        }
-
-        if ( fillInGaps(t) ) {
-            return true;
         } else {
-            int nextIndex = head + 1;
-            int maxIndex  = elements.length - 1;
-            if ( nextIndex > maxIndex ) {
-                elements = Arrays.copyOf(elements, elements.length * 2);
-            }
+            if ( !fillInGaps(t) ) {
+                int nextIndex = head + 1;
+                int maxIndex  = elements.length - 1;
+                if ( nextIndex > maxIndex ) {
+                    elements = Arrays.copyOf(elements, elements.length * 2);
+                }
 
-            elements[nextIndex] = t;
-            head = nextIndex;
-            size++;
+                elements[nextIndex] = t;
+                head = nextIndex;
+            }
         }
 
+        size++;
         return true;
     }
 
@@ -162,13 +160,15 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
             return false;
         }
 
-        if ( size == 0 ) {
+        if ( elements == null || size == 0 ) {
             return false;
         }
 
         int oldSize = size;
         for ( int i = 0; i < elements.length; i++ ) {
-            if ( elements[i].equals(o) ) {
+            if ( elements[i] == null ) {
+                continue;
+            } else if ( o.equals(elements[i]) ) {
                 freeUp(i);
             }
         }
@@ -197,7 +197,7 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
             return false;
         }
 
-        int oldSize = collection.size();
+        int oldSize = size;
         for ( T t : collection ) {
             add(t);
         }
@@ -225,10 +225,12 @@ public class DefaultCollectionImpl<T> implements DefaultCollection <T> {
             return false;
         }
 
-        int oldSize = collection.size();
+        int oldSize = size();
         for ( int i = 0; i < elements.length; i++ ) {
-            if ( !collection.contains(elements[i]) ) {
-                freeUp(i);
+            if ( elements[i] != null ) {
+                if ( !collection.contains(elements[i]) ) {
+                    freeUp(i);
+                }
             }
         }
 
